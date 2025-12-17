@@ -84,9 +84,14 @@ Added to `docker-compose.yaml`:
 ```yaml
 environment:
   - 'ENABLE_API_KEYS=true'
+  - 'USER_PERMISSIONS_FEATURES_API_KEYS=true'
 ```
 
-This tells Open WebUI to allow API key generation and usage.
+**Two flags are required:**
+1. `ENABLE_API_KEYS=true` - Enables the API key feature globally
+2. `USER_PERMISSIONS_FEATURES_API_KEYS=true` - Gives users permission to create/use API keys
+
+Without BOTH flags, you'll get: "API key creation is not allowed in the environment."
 
 ## Troubleshooting
 
