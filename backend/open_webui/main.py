@@ -1819,7 +1819,7 @@ async def get_app_config(request: Request):
     onboarding = False
 
     if user is None:
-        onboarding = True  # Always show onboarding for unauthenticated users
+        onboarding = user_count == 0
 
     return {
         **({"onboarding": True} if onboarding else {}),

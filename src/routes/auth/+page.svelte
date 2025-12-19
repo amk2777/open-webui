@@ -177,7 +177,16 @@
 		if (($config?.features.auth_trusted_header ?? false) || $config?.features.auth === false) {
 			await signInHandler();
 		} else {
-			onboarding = $config?.onboarding ?? false;
+			// Always show onboarding page first (landing page with animation)
+			onboarding = true;
+			// Set default mode based on whether users exist, but onboarding will be shown first
+			if ($config?.onboarding ?? false) {
+				// No users exist - will show signup after onboarding
+				mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
+			} else {
+				// Users exist - will show signin after onboarding
+				mode = $config?.features.enable_ldap ? 'ldap' : 'signin';
+			}
 		}
 	});
 </script>
@@ -190,9 +199,18 @@
 
 <OnBoarding
 	bind:show={onboarding}
-	getStartedHandler={() => {
+	getStartedHandler={async () => {
 		onboarding = false;
-		mode = $config?.features.enable_ldap ? 'ldap' : 'signup';
+		// Refresh config to get the latest onboarding state
+		const freshConfig = await getBackendConfig();
+		await config.set(freshConfig);
+		
+		// If onboarding is true (no users exist), show signup. Otherwise show signin.
+		if (freshConfig?.onboarding ?? false) {
+			mode = freshConfig?.features?.enable_ldap ? 'ldap' : 'signup';
+		} else {
+			mode = freshConfig?.features?.enable_ldap ? 'ldap' : 'signin';
+		}
 	}}
 />
 
