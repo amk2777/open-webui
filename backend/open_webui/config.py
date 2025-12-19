@@ -1166,31 +1166,38 @@ except Exception as e:
 if default_prompt_suggestions == []:
     default_prompt_suggestions = [
         {
-            "title": ["Help me study", "vocabulary for a college entrance exam"],
-            "content": "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.",
+            "title": ["ToxPath Interpretation", "clinical pathology changes for hepatocellular degeneration/necrosis"],
+            "content": "Are there any clinical pathology changes linked to the observed hepatocellular degeneration/necrosis?",
         },
         {
-            "title": ["Give me ideas", "for what to do with my kids' art"],
-            "content": "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
+            "title": ["Dosage Recommendation", "MTD of Enalapril in 1 month mouse study"],
+            "content": "Recommend the maximum tolerated dose of Enalapril in a 1 month mouse study.",
         },
+
         {
-            "title": ["Tell me a fun fact", "about the Roman Empire"],
-            "content": "Tell me a random fun fact about the Roman Empire",
+            "title": ["Microscopic Pathology Correlation", "macroscopic lesions for hepatocellular necrosis"],
+            "content": "What macroscopic lesions typically correlate with hepatocellular necrosis?",
         },
+
         {
-            "title": ["Show me a code snippet", "of a website's sticky header"],
-            "content": "Show me a code snippet of a website's sticky header in CSS and JavaScript.",
+            "title": ["Study Synthesis", "recent papers on nanoplastic toxicity in rodents"],
+            "content": "Find recent peer-reviewed papers on nanoplastic toxicity in rodents.",
         },
+
         {
-            "title": [
-                "Explain options trading",
-                "if I'm familiar with buying and selling stocks",
-            ],
-            "content": "Explain options trading in simple terms if I'm familiar with buying and selling stocks.",
+            "title": ["Literature Scouting", "approved dosage forms and routes for methotrexate"],
+            "content": "What dosage forms and routes are approved for methotrexate?",
         },
+
         {
-            "title": ["Overcome procrastination", "give me tips"],
-            "content": "Could you start by asking me about instances when I procrastinate the most and then give me some suggestions to overcome it?",
+            "title": ["Drug Formulation & Administration", "top five fatal FAERS reactions for isotretinoin"],
+            "content": "What are the top five fatal FAERS reactions reported for isotretinoin?",
+
+        },
+
+        {
+            "title": ["Adverse-Event Analytics", "serious non-fatal events for pembrolizumab since 2022"],
+            "content": "Show serious (non-fatal) adverse events linked to pembrolizumab since 2022.",
         },
     ]
 
@@ -1716,9 +1723,10 @@ TITLE_GENERATION_PROMPT_TEMPLATE = PersistentConfig(
 )
 
 DEFAULT_TITLE_GENERATION_PROMPT_TEMPLATE = """### Task:
-Generate a concise, 3-5 word title with an emoji summarizing the chat history.
+Generate a concise, 3-5 word title with an emoji summarizing the chat history of a toxicology pathology assistant (Beagle).
 ### Guidelines:
 - The title should clearly represent the main theme or subject of the conversation.
+- Prioritise tox/path content: organ, species, lesion, compound/class, task type.
 - Use emojis that enhance understanding of the topic, but avoid quotation marks or special formatting.
 - Write the title in the chat's primary language; default to English if multilingual.
 - Prioritize accuracy over excessive creativity; keep it clear and simple.
@@ -1728,12 +1736,13 @@ Generate a concise, 3-5 word title with an emoji summarizing the chat history.
 ### Output:
 JSON format: { "title": "your concise title here" }
 ### Examples:
-- { "title": "📉 Stock Market Trends" },
-- { "title": "🍪 Perfect Chocolate Chip Recipe" },
-- { "title": "Evolution of Music Streaming" },
-- { "title": "Remote Work Productivity Tips" },
-- { "title": "Artificial Intelligence in Healthcare" },
-- { "title": "🎮 Video Game Development Insights" }
+- { "title": "🔬 Rat Liver Steatosis"},
+- { "title": "📚 PubMed Evidence Review" },
+- { "title": "🖼️ H&E Lesion Analysis" },
+- { "title": "⚠️ Dose-Related Hepatotoxicity" }
+### Fallbacks
+- No clear topic → “🔬 Toxicologic Pathology Discussion”
+- Unclear but image-based → “🔬 Histology Image Review”
 ### Chat History:
 <chat_history>
 {{MESSAGES:END:2}}
@@ -2016,7 +2025,7 @@ Responses from models: {{responses}}"""
 ENABLE_CODE_EXECUTION = PersistentConfig(
     "ENABLE_CODE_EXECUTION",
     "code_execution.enable",
-    os.environ.get("ENABLE_CODE_EXECUTION", "True").lower() == "true",
+    os.environ.get("ENABLE_CODE_EXECUTION", "False").lower() == "true",
 )
 
 CODE_EXECUTION_ENGINE = PersistentConfig(
@@ -2059,7 +2068,7 @@ CODE_EXECUTION_JUPYTER_TIMEOUT = PersistentConfig(
 ENABLE_CODE_INTERPRETER = PersistentConfig(
     "ENABLE_CODE_INTERPRETER",
     "code_interpreter.enable",
-    os.environ.get("ENABLE_CODE_INTERPRETER", "True").lower() == "true",
+    os.environ.get("ENABLE_CODE_INTERPRETER", "False").lower() == "true",
 )
 
 CODE_INTERPRETER_ENGINE = PersistentConfig(
