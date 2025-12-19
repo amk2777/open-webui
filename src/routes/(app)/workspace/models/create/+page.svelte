@@ -64,7 +64,7 @@
 	onMount(async () => {
 		window.addEventListener('message', async (event) => {
 			if (
-				!['https://openwebui.com', 'https://www.openwebui.com', 'http://localhost:5173'].includes(
+				!['https://openwebui.com', 'https://www.beagle-dev-uks-vm-1-fe.histofy.ai', 'http://localhost:5173'].includes(
 					event.origin
 				)
 			) {
