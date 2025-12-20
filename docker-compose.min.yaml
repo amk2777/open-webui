@@ -65,10 +65,10 @@ services:
       - 'OLLAMA_BASE_URL=http://ollama:11434'
       - 'WEBUI_SECRET_KEY='
       - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
-      - REDIS_URL=redis://:${REDIS_PASSWORD}@beagle-redis:6379
+      - REDIS_URL=${REDIS_URL:-redis://:${REDIS_PASSWORD}@beagle-redis:6379}
       - ENABLE_WEBSOCKET_SUPPORT=true
       - WEBSOCKET_MANAGER=redis
-      - WEBSOCKET_REDIS_URL=redis://:${REDIS_PASSWORD}@beagle-redis:6379
+      - WEBSOCKET_REDIS_URL=${REDIS_URL:-redis://:${REDIS_PASSWORD}@beagle-redis:6379}
       - ENABLE_OTEL=true
       - ENABLE_OTEL_METRICS=true
       - OTEL_EXPORTER_OTLP_INSECURE=true
